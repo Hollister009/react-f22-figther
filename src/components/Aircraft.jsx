@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useControls } from 'leva'
@@ -24,6 +24,8 @@ const Aircraft = () => {
 
   useEffect(() => {
     if (meshRef.current) {
+      // Rotate the object around the Y-axis
+      meshRef.current.rotation.y = 90 * Math.PI / 180
       setTarget(meshRef)
     }
   }, [meshRef.current])

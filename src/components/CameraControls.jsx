@@ -1,38 +1,40 @@
-import { useEffect, useRef, useState } from 'react'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useState, useEffect, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { Vector3 } from 'three'
+
+const vec3 = new Vector3()
 
 const CameraControls = ({ target }) => {
-  const { camera } = useThree()
   const [thirdPersonView, setThirdPersonView] = useState(false)
+  const desiredOffset = useRef({ x: 0, y: 2, z: 5 })
   const transitionSpeed = 0.1
-  const desiredOffset = useRef({ x: 0, y: 5, z: 10 }) // Adjust the desired offset according to your needs
+
+  vec3.set(
+    desiredOffset.current.x,
+    desiredOffset.current.y,
+    desiredOffset.current.z
+  )
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.code === 'Space') {
-        setThirdPersonView((prev) => !prev)
+        setThirdPersonView((prevState) => !prevState)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  useFrame(() => {
+  useFrame((state) => {
     if (target && target.current) {
       if (thirdPersonView) {
-        camera.position.lerp(
-          target.current.position.clone().add(desiredOffset.current),
+        state.camera.position.lerp(
+          target.current.position.clone().add(vec3),
           transitionSpeed
         )
-      } else {
-        camera.position.lerp(target.current.position, transitionSpeed)
       }
-
-      // camera.lookAt(target.current.position)
+      state.camera.lookAt(target.current.position)
     }
   })
 
