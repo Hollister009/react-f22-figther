@@ -5,11 +5,20 @@ import { useControls } from 'leva'
 
 import Model from './Model'
 import CameraControls from './CameraControls'
+import AircraftControls from './AircraftControls'
 
 const Aircraft = () => {
   const model = useLoader(GLTFLoader, './models/f22.glb')
   const [target, setTarget] = useState(null)
   const meshRef = useRef(null)
+
+  const onRotationChange = ({ x, y, z }) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = x * Math.PI / 180
+      meshRef.current.rotation.y = y * Math.PI / 180
+      meshRef.current.rotation.z = z * Math.PI / 180
+    }
+  }
 
   useControls('F22', {
     position: {
@@ -19,13 +28,17 @@ const Aircraft = () => {
       onChange: (v) => {
         meshRef.current.position.copy(v)
       }
+    },
+    rotation: {
+      x: 0,
+      y: 0,
+      z: 0,
+      onChange: onRotationChange
     }
   })
 
   useEffect(() => {
     if (meshRef.current) {
-      // Rotate the object around the Y-axis
-      meshRef.current.rotation.y = 90 * Math.PI / 180
       setTarget(meshRef)
     }
   }, [meshRef.current])
@@ -34,6 +47,7 @@ const Aircraft = () => {
     <>
       <Model meshRef={meshRef} model={model} />
       <CameraControls target={target} />
+      <AircraftControls target={target} />
     </>
   )
 }

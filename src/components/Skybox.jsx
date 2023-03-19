@@ -3,7 +3,7 @@ import { CubeTextureLoader } from 'three'
 import { useThree } from '@react-three/fiber'
 
 const Skybox = ({ imagePrefix, imageSuffix }) => {
-  const { scene } = useThree()
+  const scene = useThree(state => state.scene)
 
   useLayoutEffect(() => {
     const loader = new CubeTextureLoader()
