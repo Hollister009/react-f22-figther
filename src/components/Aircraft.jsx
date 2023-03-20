@@ -3,6 +3,7 @@ import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useControls } from 'leva'
 
+import { useAircraftControls } from '../hooks'
 import Model from './Model'
 import CameraControls from './CameraControls'
 import AircraftControls from './AircraftControls'
@@ -19,6 +20,8 @@ const Aircraft = () => {
       meshRef.current.rotation.z = z * Math.PI / 180
     }
   }
+
+  useAircraftControls(target)
 
   useControls('F22', {
     position: {
