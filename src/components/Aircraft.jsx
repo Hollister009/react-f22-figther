@@ -6,7 +6,6 @@ import { useControls } from 'leva'
 import { useAircraftControls } from '../hooks'
 import Model from './Model'
 import CameraControls from './CameraControls'
-import AircraftControls from './AircraftControls'
 
 const Aircraft = () => {
   const model = useLoader(GLTFLoader, './models/f22.glb')
@@ -50,7 +49,6 @@ const Aircraft = () => {
     <>
       <Model meshRef={meshRef} model={model} />
       <CameraControls target={target} />
-      <AircraftControls target={target} />
     </>
   )
 }
