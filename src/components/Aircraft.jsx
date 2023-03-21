@@ -1,22 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
-import { useLoader } from '@react-three/fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useControls } from 'leva'
 
 import { useAircraftControls } from '../hooks'
-import Model from './Model'
+import { Model } from './F22'
 import CameraControls from './CameraControls'
 
 const Aircraft = () => {
-  const model = useLoader(GLTFLoader, './models/f22.glb')
   const [target, setTarget] = useState(null)
-  const meshRef = useRef(null)
+  const modelRef = useRef(null)
 
   const onRotationChange = ({ x, y, z }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = x * Math.PI / 180
-      meshRef.current.rotation.y = y * Math.PI / 180
-      meshRef.current.rotation.z = z * Math.PI / 180
+    if (modelRef.current) {
+      modelRef.current.rotation.x = (x * Math.PI) / 180
+      modelRef.current.rotation.y = (y * Math.PI) / 180
+      modelRef.current.rotation.z = (z * Math.PI) / 180
     }
   }
 
@@ -28,7 +25,7 @@ const Aircraft = () => {
       y: 2,
       z: 0,
       onChange: (v) => {
-        meshRef.current.position.copy(v)
+        modelRef.current.position.copy(v)
       }
     },
     rotation: {
@@ -40,14 +37,14 @@ const Aircraft = () => {
   })
 
   useEffect(() => {
-    if (meshRef.current) {
-      setTarget(meshRef)
+    if (modelRef.current) {
+      setTarget(modelRef)
     }
-  }, [meshRef.current])
+  }, [modelRef.current])
 
   return (
     <>
-      <Model meshRef={meshRef} model={model} />
+      <Model ref={modelRef} />
       <CameraControls target={target} />
     </>
   )

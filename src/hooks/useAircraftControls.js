@@ -33,22 +33,22 @@ const useAircraftControls = (target) => {
   const handleKeyDown = (e) => {
     switch (e.code) {
       case 'KeyW':
-        setControlInputs((prev) => ({ ...prev, pitch: -0.01 }))
+        setControlInputs((prev) => ({ ...prev, pitch: -0.02 }))
         break
       case 'KeyS':
-        setControlInputs((prev) => ({ ...prev, pitch: 0.01 }))
+        setControlInputs((prev) => ({ ...prev, pitch: 0.02 }))
         break
       case 'KeyA':
-        setControlInputs((prev) => ({ ...prev, roll: -0.01 }))
+        setControlInputs((prev) => ({ ...prev, roll: 0.02 }))
         break
       case 'KeyD':
-        setControlInputs((prev) => ({ ...prev, roll: 0.01 }))
+        setControlInputs((prev) => ({ ...prev, roll: -0.02 }))
         break
       case 'KeyQ':
-        setControlInputs((prev) => ({ ...prev, yaw: 0.01 }))
+        setControlInputs((prev) => ({ ...prev, yaw: 0.02 }))
         break
       case 'KeyE':
-        setControlInputs((prev) => ({ ...prev, yaw: -0.01 }))
+        setControlInputs((prev) => ({ ...prev, yaw: -0.02 }))
         break
       default:
         break
@@ -87,19 +87,19 @@ const useAircraftControls = (target) => {
     // handleGamepadInput()
 
     if (target && target.current) {
-      target.current.rotation.x += controlInputs.roll
+      target.current.rotation.x += controlInputs.pitch
       target.current.rotation.y += controlInputs.yaw
-      target.current.rotation.z += controlInputs.pitch
+      target.current.rotation.z += controlInputs.roll
 
       const lerpSpeed = 0.015
 
-      if (controlInputs.roll === 0) {
+      if (controlInputs.pitch === 0) {
         target.current.rotation.x *= 1 - lerpSpeed
       }
       if (controlInputs.yaw === 0) {
         target.current.rotation.y *= 1 - lerpSpeed
       }
-      if (controlInputs.pitch === 0) {
+      if (controlInputs.roll === 0) {
         target.current.rotation.z *= 1 - lerpSpeed
       }
     }
